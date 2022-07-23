@@ -24,6 +24,6 @@ class AuthSignupRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $this->password = Hash::make($this->input('password'));
+        $this->merge(['password' => Hash::make($this->input('password'))]);
     }
 }

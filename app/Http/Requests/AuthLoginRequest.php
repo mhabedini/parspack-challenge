@@ -20,9 +20,4 @@ class AuthLoginRequest extends FormRequest
             'password' => 'required|string',
         ];
     }
-
-    protected function prepareForValidation()
-    {
-        $this->password = Hash::make($this->input('password'));
-    }
 }

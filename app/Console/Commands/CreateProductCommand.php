@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,6 +21,13 @@ class CreateProductCommand extends Command
      * @var string
      */
     protected $description = 'Create a product via command line';
+    private ProductService $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        parent::__construct();
+        $this->productService = $productService;
+    }
 
     /**
      * Execute the console command.
@@ -31,7 +38,7 @@ class CreateProductCommand extends Command
     {
         $productName = $this->ask('Product name');
         Validator::validate(['name' => $productName], ['name' => 'required|string|unique:products']);
-        Product::create([
+        $this->productService->create([
             'name' => $productName,
         ]);
         $this->info('Product has been created successfully');

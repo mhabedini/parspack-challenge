@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class ProductService
@@ -16,6 +17,11 @@ class ProductService
     {
         // TODO handle pagination for product comments!
         return Product::with('comments')->paginate($perPage);
+    }
+
+    public function create(array $data): Model|Product
+    {
+        return Product::create($data);
     }
 
     /**
@@ -47,9 +53,9 @@ class ProductService
         $product = Product::findOrFail($comment->commentable_id);
         $regex = "{$product->name}: [0-9]+";
         $fileModifier = FileModifierFactory::create('/opt/myprogram/product_comments');
-        $found = $fileModifier->find($regex);
-        if ($found) {
-            $newNumber = ++Str::of($found)->split('/\s/')->toArray()[1];
+        $foundString = $fileModifier->find($regex);
+        if ($foundString) {
+            $newNumber = ++Str::of($foundString)->split('/\s/')->toArray()[1];
             $replace = "$product->name: $newNumber";
             $fileModifier->replace($regex, $replace);
         } else {

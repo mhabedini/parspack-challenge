@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         $attempt = auth()->attempt($request->validated());
         if (!$attempt) {
-            throw new UnauthorizedHttpException('');
+            throw new UnauthorizedHttpException('', 'Your credential is wrong');
         }
 
         if ($request->filled('email')) {
