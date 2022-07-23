@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->morphs('commentable');
             $table->timestamps();
 
+            $table->index('user_id');
+
             $table->foreign('user_id')->on('users')->references('id')->restrictOnDelete();
         });
     }

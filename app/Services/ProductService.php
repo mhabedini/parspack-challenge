@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\ProductCommentLimitationExceedException;
-use App\Helpers\FileModifierFactory;
+use App\Helpers\FileEditorCreator;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Models\User;
@@ -24,6 +24,7 @@ class ProductService
         return Product::create($data);
     }
 
+    private const USER_PRODUCT_COMMENT_LIMIT = 2;
     /**
      * @throws \Exception
      */
@@ -39,7 +40,7 @@ class ProductService
             $product = Product::whereName($productName)->first();
         }
 
-        if ($user->productCommentCount($product) >= 2) {
+        if ($user->productCommentCount($product) >= self::USER_PRODUCT_COMMENT_LIMIT) {
             throw new ProductCommentLimitationExceedException();
         }
 
@@ -52,7 +53,7 @@ class ProductService
     {
         $product = Product::findOrFail($comment->commentable_id);
         $regex = "{$product->name}: [0-9]+";
-        $fileModifier = FileModifierFactory::create('/opt/myprogram/product_comments');
+        $fileModifier = FileEditorCreator::create('/opt/myprogram/product_comments');
         $foundString = $fileModifier->find($regex);
         if ($foundString) {
             $newNumber = ++Str::of($foundString)->split('/\s/')->toArray()[1];

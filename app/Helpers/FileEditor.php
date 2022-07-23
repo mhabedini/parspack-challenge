@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class FileModifier
+class FileEditor
 {
     private string $path;
 

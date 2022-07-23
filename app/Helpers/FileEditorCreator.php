@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-class FileModifierFactory
+class FileEditorCreator
 {
-    public static function create(string $filePath): FileModifier
+    public static function create(string $filePath): FileEditor
     {
         $dir = dirname($filePath);
         $fileExists = exec("test -e $filePath && echo exists || echo ");
@@ -12,6 +12,6 @@ class FileModifierFactory
             exec("sudo mkdir -p $dir");
             exec("sudo touch $filePath");
         }
-        return new FileModifier($filePath);
+        return new FileEditor($filePath);
     }
 }
