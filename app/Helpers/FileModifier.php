@@ -13,16 +13,16 @@ class FileModifier
 
     public function find($regex): bool|string
     {
-        return exec("grep -E '$regex' {$this->path}");
+        return exec("sudo grep -E '$regex' {$this->path}");
     }
 
     public function replace(string $searchRegex, string $replace): bool|string
     {
-        return exec("sed -i -E 's/$searchRegex/$replace/g' {$this->path}");
+        return exec("sudo sed -i -E 's/$searchRegex/$replace/g' {$this->path}");
     }
 
     public function append(string $string): bool|string
     {
-        return exec("echo '$string' >> {$this->path}");
+        return exec("sudo echo '$string' >> {$this->path}");
     }
 }
