@@ -10,8 +10,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'username' => 'parspack',
+            'email' => 'admin@parspack.com',
         ]);
     }
 }
