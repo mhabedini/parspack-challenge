@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, ProductService $productService)
     {
-        $perPage = $request->input('per_page', 5);
-        // TODO handle pagination for product comments!
-        $products = Product::with('comments')->paginate($perPage);
+        $products = $productService->index($request->input('per_page', 5));
         return response()->json($products);
     }
 }

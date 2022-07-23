@@ -22,8 +22,7 @@ class AuthService
 
     public function signup(array $userData): User
     {
-        $user = User::create($userData);;
-        return $user;
+        return User::create($userData);
     }
 
     public function createToken(User $user): string
