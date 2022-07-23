@@ -4,37 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthSignupRequest;
-use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthController extends Controller
 {
-    public function login(AuthLoginRequest $request)
+    public function login(AuthLoginRequest $request, AuthService $authService)
     {
         $attempt = auth()->attempt($request->validated());
-        if ($attempt) {
-            $user = User::query();
-            if ($request->filled('email')) {
-                $user = User::where('email', $request->input('email'));
-            } elseif ($request->filled('username')) {
-                $user = User::where('username', $request->input('username'));
-            }
-            $user = $user->first();
-            $token = $user->createToken('')->accessToken;
-
-            return response()->json([
-                'token' => $token,
-            ]);
+        if (!$attempt) {
+            throw new UnauthorizedHttpException('');
         }
 
-        throw new UnauthorizedHttpException('');
+        if ($request->filled('email')) {
+            $token = $authService->loginWithEmail($request->input('email'));
+        } else {
+            $token = $authService->loginWithUsername($request->input('username'));
+        }
+        return response()->json([
+            'token' => $token,
+        ]);
     }
 
-    public function signup(AuthSignupRequest $request)
+
+    public function signup(AuthSignupRequest $request, AuthService $authService)
     {
-        $user = User::create($request->validated());
-        $token = $user->createToken('')->accessToken;
+        $user = $authService->signup($request->validated());
+        $token = $authService->createToken($user);
         return response()->json($user->toArray() + ['token' => $token], Response::HTTP_CREATED);
     }
 }
