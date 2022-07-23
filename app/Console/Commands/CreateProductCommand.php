@@ -36,11 +36,24 @@ class CreateProductCommand extends Command
      */
     public function handle(): int
     {
-        $productName = $this->ask('Product name');
-        Validator::validate(['name' => $productName], ['name' => 'required|string|unique:products']);
-        $this->productService->create([
-            'name' => $productName,
+        $productData = array();
+        $productData['name'] = $this->ask('Product name');
+        $productData['model'] = $this->ask('Model');
+        $productData['description'] = $this->ask('Description');
+        $productData['summary'] = $this->ask('Summary');
+        $productData['price'] = $this->ask('Price');
+        $productData['sale_price'] = $this->ask('Sale Price');
+
+        Validator::validate($productData, [
+            'name' => 'required|string|unique:products',
+            'model' => 'nullable|string',
+            'description' => 'nullable|string',
+            'summary' => 'nullable|string',
+            'price' => 'nullable|integer',
+            'sale_price' => 'nullable|integer',
         ]);
+
+        $this->productService->create($productData);
         $this->info('Product has been created successfully');
         return self::SUCCESS;
     }
