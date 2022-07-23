@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
-class ProductCommentLimitaionExceedException
+use Exception;
+
+class ProductCommentLimitationExceedException extends Exception
 {
 
 }

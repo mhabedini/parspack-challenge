@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthLoginRequest extends FormRequest
 {
@@ -18,5 +19,10 @@ class AuthLoginRequest extends FormRequest
             'username' => 'required_without:email|string',
             'password' => 'required|string',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->password = Hash::make($this->input('password'));
     }
 }

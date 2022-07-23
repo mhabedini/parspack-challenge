@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthSignupRequest extends FormRequest
 {
@@ -21,11 +22,8 @@ class AuthSignupRequest extends FormRequest
         ];
     }
 
-    // TODO hash the password
-    /*protected function prepareForValidation()
+    protected function prepareForValidation()
     {
-        $this->request->replace([
-            'password' => Hash::make($this['password']),
-        ]);
-    }*/
+        $this->password = Hash::make($this->input('password'));
+    }
 }

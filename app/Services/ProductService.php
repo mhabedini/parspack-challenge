@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\ProductCommentLimitationExceedException;
 use App\Helpers\FileModifierFactory;
 use App\Models\Comment;
 use App\Models\Product;
@@ -33,8 +34,7 @@ class ProductService
         }
 
         if ($user->productCommentCount($product) >= 2) {
-            // TODO throw a proper exception in here
-            throw new \Exception();
+            throw new ProductCommentLimitationExceedException();
         }
 
         return $product->comments()->create(
