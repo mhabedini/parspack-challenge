@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Product;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Validator;
 
 class CreateProductCommand extends Command
 {
@@ -29,6 +30,7 @@ class CreateProductCommand extends Command
     public function handle(): int
     {
         $productName = $this->ask('Product name');
+        Validator::validate(['name' => $productName], ['name' => 'required|string|unique:products']);
         Product::create([
             'name' => $productName,
         ]);
