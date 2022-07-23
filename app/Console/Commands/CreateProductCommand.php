@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Services\ProductService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
@@ -44,14 +45,7 @@ class CreateProductCommand extends Command
         $productData['price'] = $this->ask('Price');
         $productData['sale_price'] = $this->ask('Sale Price');
 
-        Validator::validate($productData, [
-            'name' => 'required|string|unique:products',
-            'model' => 'nullable|string',
-            'description' => 'nullable|string',
-            'summary' => 'nullable|string',
-            'price' => 'nullable|integer',
-            'sale_price' => 'nullable|integer',
-        ]);
+        Validator::validate($productData, (new StoreProductRequest)->rules());
 
         $this->productService->create($productData);
         $this->info('Product has been created successfully');
