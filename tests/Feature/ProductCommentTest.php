@@ -12,6 +12,8 @@ class ProductCommentTest extends TestCase
 
     public function testUserCanCommentOnProduct()
     {
+        Comment::getEventDispatcher();
+        Comment::unsetEventDispatcher();
         $user = User::factory()->create();
         $this->actingAs($user, 'api');
         $product = Product::factory()->create();
@@ -42,6 +44,8 @@ class ProductCommentTest extends TestCase
 
     public function testUserCantAddMoreThanTwoCommentsOnAProduct()
     {
+        Comment::getEventDispatcher();
+        Comment::unsetEventDispatcher();
         $this->withoutExceptionHandling();
         $this->expectException(\Exception::class);
         $user = User::factory()->create();
