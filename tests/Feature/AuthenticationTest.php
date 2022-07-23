@@ -30,6 +30,7 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->raw();
         $response = $this->post('api/auth/signup', [
             'email' => $user['email'],
+            'username' => $user['username'],
             'password' => $user['password'],
         ]);
 
