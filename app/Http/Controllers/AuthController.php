@@ -14,7 +14,13 @@ class AuthController extends Controller
     {
         $attempt = auth()->attempt($request->validated());
         if ($attempt) {
-            $user = User::where('email', $request->input('email'))->first();
+            $user = User::query();
+            if ($request->filled('email')) {
+                $user = User::where('email', $request->input('email'));
+            } elseif ($request->filled('username')) {
+                $user = User::where('username', $request->input('username'));
+            }
+            $user = $user->first();
             $token = $user->createToken('')->accessToken;
 
             return response()->json([

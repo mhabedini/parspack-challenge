@@ -9,12 +9,28 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testUserCanAuthenticate()
+    public function testUserCanAuthenticateWithEmail()
     {
         $password = 'test';
         $user = User::factory()->create(['password' => Hash::make($password)]);
         $response = $this->post('api/auth/login', [
             'email' => $user['email'],
+            'password' => $password,
+        ]);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'token'
+        ]);
+    }
+
+    public function testUserCanAuthenticateWithUsername()
+    {
+        $password = 'test';
+        $user = User::factory()->create(['password' => Hash::make($password)]);
+        $response = $this->post('api/auth/login', [
+            'username' => $user['username'],
             'password' => $password,
         ]);
 
