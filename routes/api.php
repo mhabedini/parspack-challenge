@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductCommentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,5 @@ Route::post('auth/signup', [AuthController::class, 'signup']);
 Route::get('products', [ProductController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('products/comments', [ProductCommentController::class, 'store']);
 });

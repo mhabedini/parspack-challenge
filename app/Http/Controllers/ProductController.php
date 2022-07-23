@@ -10,7 +10,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 5);
-        $products = Product::paginate($perPage);
+        // TODO handle pagination for product comments!
+        $products = Product::with('comments')->paginate($perPage);
         return response()->json($products);
     }
 }

@@ -23,6 +23,7 @@ class ProductTest extends TestCase
                 'summary',
                 'price',
                 'sale_price',
+                'comments'
             ]]
         ]);
     }
