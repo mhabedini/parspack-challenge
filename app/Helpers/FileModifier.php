@@ -13,7 +13,7 @@ class FileModifier
 
     public function find($regex): bool|string
     {
-        return exec("sudo grep -E '$regex' {$this->path}");
+        return exec("grep -E '$regex' {$this->path}");
     }
 
     public function replace(string $searchRegex, string $replace): bool|string
@@ -23,6 +23,6 @@ class FileModifier
 
     public function append(string $string): bool|string
     {
-        return exec("sudo echo '$string' >> {$this->path}");
+        return exec("sudo echo '$string' | sudo tee -a {$this->path}");
     }
 }
