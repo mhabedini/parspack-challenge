@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\Comment
@@ -29,10 +30,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
+ * @property-read Model|\Eloquent $commentable
  */
 class Comment extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    public function commentable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }
